@@ -2,16 +2,17 @@
 
 ## Data Collection
 
-- Daily Spanish Gas Prices (GDAES_D+1) 2019-2024 - https://www.mibgas.es/en
+- Daily Spanish Gas Prices (GDAES_D+1) 2019-2024 - https://www.mibgas.es/en - https://www.mibgas.es/en/file-access
 - Hourly Weather Data for Madrid, Barcelona, Seville, Bilboa, Valencia 2019-2024 - https://www.visualcrossing.com/weather/weather-data-services
 - Hourly energy consumption and generation 2019-2024 - https://newtransparency.entsoe.eu/ or https://transparency.entsoe.eu/
+- Another source for hourly consumption and generation data - https://www.esios.ree.es/en/generation-and-consumption?date=22-11-2024
 
 
 - Kaggle dataset 2014-2018 https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather?resource=download
     - Model on this kaggle data - https://www.kaggle.com/code/dimitriosroussis/electricity-price-forecasting-with-dnns-eda
 
 
-- s - https://www.omie.es/en/file-access-list?parents%5B0%5D=/&parents%5B1%5D=Day-ahead%20Market&parents%5B2%5D=3.%20Curves&dir=Monthly%20files%20with%20aggregate%20supply%20and%20demand%20curves%20of%20Day-ahead%20market%20including%20bid%20units&realdir=curva_pbc_uof
+- https://www.omie.es/en/file-access-list?parents%5B0%5D=/&parents%5B1%5D=Day-ahead%20Market&parents%5B2%5D=3.%20Curves&dir=Monthly%20files%20with%20aggregate%20supply%20and%20demand%20curves%20of%20Day-ahead%20market%20including%20bid%20units&realdir=curva_pbc_uof
 
 ## Background
 
