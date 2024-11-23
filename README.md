@@ -14,6 +14,8 @@
 
 - https://www.omie.es/en/file-access-list?parents%5B0%5D=/&parents%5B1%5D=Day-ahead%20Market&parents%5B2%5D=3.%20Curves&dir=Monthly%20files%20with%20aggregate%20supply%20and%20demand%20curves%20of%20Day-ahead%20market%20including%20bid%20units&realdir=curva_pbc_uof
 
+Any missing data (of which there was very little) was filled using linear interpolation
+
 ## Background
 
 ### Spain's Day-Ahead Energy Market
