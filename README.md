@@ -8,7 +8,7 @@ In Spain, the Day-Ahead Market (DAM) sets electricity prices for the following d
 
 The seller bids are ranked from lowest to highest to form a "bid stack", and contrarily consumers' bids are ranked from highest to lowest. The market operator (OMIE in Spain's case) matches the bids, starting from the lowest seller bid and highest consumer bid, until the buying and selling prices meet. Any consumer bids below this price or seller bids above this price are forgetten about. This sets the marginal price, the highest price needed to meet the demand for each hour. This marginal price is applied uniformly across all producers and consumers for that hour. Renewable energy sources like wind and solar often have lower bids due to their low production costs, while gas and coal plants typically set the marginal price when renewable generation is insufficient.
 
-<img src="./images/energy_bid-stack.png" alt="Bid Stack Example" width="500"/>
+<img src="./images/energy_bid-stack.png" alt="Bid Stack Example" width="600"/>
 
 An example of a bid stack is shown in the figure above. Historical bid stacks for every hour are available [here](https://www.omie.es/en/file-access-list?parents%5B0%5D=/&parents%5B1%5D=Day-ahead%20Market&parents%5B2%5D=3.%20Curves&dir=Monthly%20files%20with%20aggregate%20supply%20and%20demand%20curves%20of%20Day-ahead%20market%20including%20bid%20units&realdir=curva_pbc_uof). These could be extremely interesting to analyse for a future project, such as creating a Reinforcement Learning agent for bidding strategically to maximise generator profits or minimise the consumer clearing price for affordable energy.
 
@@ -70,11 +70,12 @@ The complete work can be found in : [SARIMA Jupyter Notebook](SARIMA_demand.ipyn
 - **Model Evaluation**
     - Residuals largely follow a normal distribution with slightly fat tails due to extreme values/outliers (e.g., public holidays) not being fully captured.
     - RMSE = 2161.14 MW, MAE = 1575.88 MW and MAPE = 6.06%.
-    <img src="./images/SARIMA_residuals.png" alt="SARIMA Residuals" width="500"/>
+    <img src="./images/SARIMA_residuals.png" alt="SARIMA Residuals" width="800"/>
 - **Week Ahead Forecast**
     - Benchmark using the energy demand for the previous week as the prediction.
     - RMSE = 1822.59 MW, MAE = 1207.44 MW and MAPE = 4.53%.
-    <img src="./images/previous_week_residuals.png" alt="Previous Week Residuals" width="500"/>
+    <img src="./images/previous_week_residuals.png" alt="Previous Week Residuals" width="800"/>
+    
     - Outperformed the SARIMA model due to strong weekly periodicity in energy demand.
 
 ### XGBoost Model
@@ -100,8 +101,9 @@ The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_demand.ip
     - Principal Component Analysis (PCA) applied to reduce dimensionality and improve efficiency.
 - **Model Evaluation**
     - RMSE = 851.66 MW, MAE = 632.62 MW and MAPE = 2.39%.
-    <img src="./images/xgboost_performance.png" alt="XGBoost Performance" width="500"/>
-    <img src="./images/xgboost_residuals.png" alt="XGBoost Residuals" width="400"/>
+    <img src="./images/xgboost_performance.png" alt="XGBoost Performance" width="800"/>
+    <img src="./images/xgboost_residuals.png" alt="XGBoost Residuals" width="500"/>
+    
     - This represents a substantial 47 - 53% improvement in both absolute and relative error compared to week ahead benchmark, demonstrating the model's ability to capture complex patterns in the data.
     - The model is saved under `./models/demand_xgboost_model.pkl`
 
@@ -124,8 +126,9 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
     - The selected hyperparameters, including a smaller model dimension, high dropout, low learning rate, and optimized betas to ensure stable training and good generalisation despite limited data.
 - **Model Evaluation**
     - RMSE = 899.11 MW, MAE = 681.94 MW and MAPE = 2.57%.
-    <img src="./images/transformer_performance.png" alt="Transformer Performance" width="500"/>
-    <img src="./images/transformer_residuals.png" alt="Transformer Residuals" width="400"/>
+    <img src="./images/transformer_performance.png" alt="Transformer Performance" width="800"/>
+    <img src="./images/transformer_residuals.png" alt="Transformer Residuals" width="500"/>
+    
     - This is significantly better that the benchmark model, however it was still outperformed by the XGBoost model which had a MAPE that was 0.18% smaller.
     - The XGBoost model outperformed the Transformer model primarily due to the limited dataset size. Transformers have higher model complexity, making them more prone to overfitting on small datasets.
     - The model is saved under `./models/demand_transformer_model_state.pth`
