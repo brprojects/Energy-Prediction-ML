@@ -86,6 +86,7 @@ The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_demand.ip
 
 #### Summary
 
+- XGBoost was selected for energy demand forecasting due to its ability to handle non-linearity, capture feature interactions, and manage missing or noisy data while avoiding overfitting through regularisation, making it more suitable than other non-neural-network-based machine learning methods.
 - A multi-output XGBoost model is needed to predict 24 hourly energy demand values for the following day using a separate model for each hour. This avoids error compounding in autoregressive approaches while capturing hour-specific patterns for improved accuracy.
 - **Data Exploration & Preprocessing**
     - Data includes historical energy demand, weather data (e.g. temperature, humidity, wind speed) from multiple Spanish cities and dates of public holidays.
@@ -116,6 +117,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
 
 #### Summary
 
+- The Transformer was selected for energy demand forecasting because its self-attention mechanism efficiently captures both short- and long-term dependencies, handles multiple input features simultaneously, and scales well for multi-output tasks, making it more suitable than other neural network-based methods.
 - The model uses an encoder-only Transformer to efficiently predict all 24 hourly demand values in a single forward pass, avoiding the computational cost and error accumulation of autoregressive Seq2Seq models.
 - **Data Preprocessing**
     - Reused the pre-cleaned dataset from the XGBoost model.
@@ -123,6 +125,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
     - The transformer model requires more data for training to learn more complex temporal patterns and relationships. Therefore, model is trained on data for making predictions at every hour rather than just at noon, enabling it to improve generalisation.
 - **Model Architecture**
     - The model uses a learnable positional encoding, a linear layer for feature projection, a transformer encoder for learning complex dependencies, and an output layer to predict energy demand at each time step.
+    - The architecture is designed to capture seasonality, exogenous variables, autoregressive patterns, and trends through different components of the model.
     - The selected hyperparameters, including a smaller model dimension, high dropout, low learning rate, and optimized betas to ensure stable training and good generalisation despite limited data.
 - **Model Evaluation**
     - RMSE = 899.11 MW, MAE = 681.94 MW and MAPE = 2.57%.
@@ -130,7 +133,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
     <img src="./images/transformer_residuals.png" alt="Transformer Residuals" width="500"/>
     
     - This is significantly better that the benchmark model, however it was still outperformed by the XGBoost model which had a MAPE that was 0.18% smaller.
-    - The XGBoost model outperformed the Transformer model primarily due to the limited dataset size. Transformers have higher model complexity, making them more prone to overfitting on small datasets.
+    - The XGBoost model outperformed the Transformer model primarily due to the limited dataset size. Transformers have higher model complexity, making them more prone to overfitting on small datasets and failing to generalise well.
     - The model is saved under `./models/demand_transformer_model_state.pth`
 
 ### Energy Demand Conclusion
