@@ -1,5 +1,24 @@
 # Spanish Energy Demand and Price Forecasting with ML
 
+Predicted Spanish day-ahead energy demand and price with 97.5% accuracy using a range of ML and statistical time series forecasting models including `XGBoost`, `Transformers`, `TFTs` and `SARIMA`. 
+
+This invloved optimising model performance via feature engineering and selection, hyper-parameter tuning and model evaluation. Also, curated a 6 million point dataset from government APIs, including historical weather data and energy generation data.
+
+## Contents  
+
+1. [Background](#background)  
+2. [Energy Demand Prediction](#energy-demand-prediction)  
+   - [Seasonal ARIMA Model](#benchmark---seasonal-arima-model)  
+   - [XGBoost Model](#xgboost-model)  
+   - [Transformer Model](#transformer-model)
+   - [Conclusion](#energy-demand-conclusion)
+2. [Energy Price Prediction](#energy-price-prediction)  
+   - [Seasonal ARIMA Model](#benchmark---seasonal-arima-model-1)  
+   - [XGBoost Model](#xgboost-model-1)  
+   - [TFT Model](#tft-model)  
+   - [Conclusion](#energy-price-conclusion)
+4. [Data Collection](#data-collection)  
+
 ## Background
 
 ### Spain's Day-Ahead Energy Market
@@ -18,18 +37,12 @@ Price transparency is ensured, and the final Day-Ahead Price is published on OMI
 
 ### Motivation For Accurately Predicting Energy Demand & Price
 
-- **Improved Grid Stability & Reliability** 
-    - Accurate demand forecasts help grid operators balance supply and demand, reducing blackouts and inefficiencies.
-- **Optimised Energy Trading & Market Operations**
-    - Traders can make better decisions on when to buy or sell electricity, maximizing profitability and minimizing risk.
-- **Lower Costs & Improved Efficiency**
-    - Utilities can optimise power generation schedules, reducing reliance on expensive backup generation and minimizing fuel costs.
-- **Integration of Renewable Energy**
-    - Helps manage the variability of wind and solar power by anticipating fluctuations and ensuring a stable energy mix.
-- **Demand Response & Load Management**
-    - Enables demand-side response programs where consumers shift usage to off-peak hours, reducing strain on the grid.
-- **Better Policy & Investment Decisions**
-    - Governments and investors can use accurate forecasts to plan infrastructure development, incentivise renewables, and improve energy security.
+- **Improved Grid Stability & Reliability**  - Accurate demand forecasts help grid operators balance supply and demand, reducing blackouts and inefficiencies.
+- **Optimised Energy Trading & Market Operations** - Traders can make better decisions on when to buy or sell electricity, maximizing profitability and minimizing risk.
+- **Lower Costs & Improved Efficiency** - Utilities can optimise power generation schedules, reducing reliance on expensive backup generation and minimizing fuel costs.
+- **Integration of Renewable Energy** - Helps manage the variability of wind and solar power by anticipating fluctuations and ensuring a stable energy mix.
+- **Demand Response & Load Management** - Enables demand-side response programs where consumers shift usage to off-peak hours, reducing strain on the grid.
+- **Better Policy & Investment Decisions** - Governments and investors can use accurate forecasts to plan infrastructure development, incentivise renewables, and improve energy security.
 
 
 ## Energy Demand Prediction
@@ -48,27 +61,8 @@ The complete work can be found in : [SARIMA Jupyter Notebook](SARIMA_demand.ipyn
 #### Summary
 
 - A SARIMA model extends ARIMA to include seasonality, which can be effective for regular, repeating patterns like weekly energy demand. Simplicity is prioritised, excluding external predictors like weather or holidays.
-- **SARIMA Parameters** : (p, d, q) × (P, D, Q, s).
-    - Non-Seasonal: 
-        - p: Auto-Regressive order
-        - d: Differencing order for stationarity
-        - q: Moving Average order
-    - Seasonal: 
-        - P: Seasonal Auto-Regressive order
-        - D: Seasonal Differencing order
-        - Q: Seasonal Moving Average order
-        - s: Seasonal period (168 for weekly seasonality in this model)
-- **Stationarity Testing**
-    - Stationarity required for SARIMA to function correctly.
-    - Applied Augmented Dickey-Fuller (ADF) test and got that trend differencing (d = 1) and seasonal differencing (D = 1) needed to achieve stationarity.
-- **Parameter Estimation**
-    - ACF (Autocorrelation Function) and PACF (Partial ACF) plots used to estimate initial parameters: p = 3, q = 50, P = 1, Q = 6.
-    - Refined parameters by minimizing Akaike Information Criterion (AIC):
-        - Final parameters: (p, d, q, P, D, Q, s) = (2, 1, 3, 1, 1, 1, 168).
-- **Model Training**
-    - Used a rolling forecast for training using the 500 preceding data points with forecasts made for the following 36 hours for day-ahead energy market. A new SARIMA model was fit every 30 days in the test range.
+- `Augmented Dickey-Fuller (ADF) Test`, `ACF (Autocorrelation Function)`, `PACF (Partial ACF)`, `Akaike Information Criterion (AIC)`, `Rolling Forecast`
 - **Model Evaluation**
-    - Residuals largely follow a normal distribution with slightly fat tails due to extreme values/outliers (e.g., public holidays) not being fully captured.
     - RMSE = 2161.14 MW, MAE = 1575.88 MW and MAPE = 6.06%.
     <img src="./images/SARIMA_residuals.png" alt="SARIMA Residuals" width="800"/>
 - **Week Ahead Forecast**
@@ -87,19 +81,7 @@ The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_demand.ip
 #### Summary
 
 - XGBoost was selected for energy demand forecasting due to its ability to handle non-linearity, capture feature interactions, and manage missing or noisy data while avoiding overfitting through regularisation, making it more suitable than other non-neural-network-based machine learning methods.
-- A multi-output XGBoost model is needed to predict 24 hourly energy demand values for the following day using a separate model for each hour. This avoids error compounding in autoregressive approaches while capturing hour-specific patterns for improved accuracy.
-- **Data Exploration & Preprocessing**
-    - Data includes historical energy demand, weather data (e.g. temperature, humidity, wind speed) from multiple Spanish cities and dates of public holidays.
-    - Data cleaning, handling missing values, and ensuring correct timestamp alignment.
-    - Restructuring data so that all features required for a single prediction (including lagged values and exogenous variables) are contained in a single row of the feature matrix.
-- **Feature Engineering**
-    - Weighted weather features based on population proximity to the Spanish cities.
-    - Lagged features to incorporate temporal dependencies.
-    - Cyclical encoding of time features (e.g. day of the week, month) to model seasonality.
-    - Categorical features (e.g. holidays, weekends) to model outliers.
-- **Feature Selection**
-    - Pearson Correlation Matrix to remove highly correlated features.
-    - Principal Component Analysis (PCA) applied to reduce dimensionality and improve efficiency.
+- `Multi-Output XGBoost`, `Data Exploration & Preprocessing`, `Lagged Features`, `Cyclical Feature Encoding`, `Categorical Features`, `Voronoi Diagram`, `Pearson Correlation Matrix`, `Principal Component Analysis (PCA)`, `Hyperparameter Tuning`
 - **Model Evaluation**
     - RMSE = 851.66 MW, MAE = 632.62 MW and MAPE = 2.39%.
     <img src="./images/xgboost_performance.png" alt="XGBoost Performance" width="800"/>
@@ -118,15 +100,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
 #### Summary
 
 - The Transformer was selected for energy demand forecasting because its self-attention mechanism efficiently captures both short- and long-term dependencies, handles multiple input features simultaneously, and scales well for multi-output tasks, making it more suitable than other neural network-based methods.
-- The model uses an encoder-only Transformer to efficiently predict all 24 hourly demand values in a single forward pass, avoiding the computational cost and error accumulation of autoregressive Seq2Seq models.
-- **Data Preprocessing**
-    - Reused the pre-cleaned dataset from the XGBoost model.
-    - Restructured the dataset into a (24, num_features) matrix per prediction to preserve temporal relationships, unlike XGBoost, which treated each time step as an independent row with lag-based features.
-    - The transformer model requires more data for training to learn more complex temporal patterns and relationships. Therefore, model is trained on data for making predictions at every hour rather than just at noon, enabling it to improve generalisation.
-- **Model Architecture**
-    - The model uses a learnable positional encoding, a linear layer for feature projection, a transformer encoder for learning complex dependencies, and an output layer to predict energy demand at each time step.
-    - The architecture is designed to capture seasonality, exogenous variables, autoregressive patterns, and trends through different components of the model.
-    - The selected hyperparameters, including a smaller model dimension, high dropout, low learning rate, and optimized betas to ensure stable training and good generalisation despite limited data.
+- `Encoder-only Transformer`, `Data Restructuring`, `Model Architecture`, `Learnable Positional Encoding`, `Hyperparameter Tuning`
 - **Model Evaluation**
     - RMSE = 899.11 MW, MAE = 681.94 MW and MAPE = 2.57%.
     <img src="./images/transformer_performance.png" alt="Transformer Performance" width="800"/>
@@ -139,6 +113,64 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
 ### Energy Demand Conclusion
 In conclusion, the XGBoost model greatly outperformed both the SARIMA model and the benchmark, achieving significantly lower error metrics, with an accuracy of 97.61%. It also slightly surpassed the Transformer model, depsite the Transformer’s ability to capture complex dependencies through self-attention, potentially limited by the smaller dataset. Given XGBoost’s superior performance, it will be used to provide energy demand predictions, which will then be utilised for forecasting energy prices in the following section.
 
+## Energy Price Prediction
+
+### Requirements
+
+- Predict the energy price for each hour in the following day (00:00 - 23:00) at 12:00 on the previous day, so as to be useful for the Day Ahead Market.
+
+### Benchmark - Seasonal ARIMA Model
+
+The aim of the SARIMA model is to use linear time series analysis to create an energy price prediction from which to benchmark the performance of the more complex ML models.
+
+The complete work can be found in : [SARIMA Jupyter Notebook](SARIMA_price.ipynb)
+
+#### Summary
+
+- A SARIMA model extends ARIMA to include seasonality, which can be effective for regular, repeating patterns like weekly energy price. Simplicity is prioritised, excluding external predictors like weather or holidays.
+- `Augmented Dickey-Fuller (ADF) Test`, `Akaike Information Criterion (AIC)`, `Rolling Forecast`
+- **Model Evaluation**
+    - RMSE = 34.97 EUR/MWh, MAE = 26.08 EUR/MWh
+    <img src="./images/SARIMA_residuals_price.png" alt="SARIMA Residuals" width="800"/>
+- **Day / Week Ahead Forecast**
+    - Benchmark using the energy price for the previous day / week as the prediction.
+    - Week Ahead: RMSE = 35.89 EUR/MWh, MAE = 26.34 EUR/MWh
+    - Day Ahead: RMSE = 30.70 EUR/MWh, MAE = 21.16 EUR/MWh
+    <img src="./images/previous_day_week_residuals_price.png" alt="Previous Day & Week Residuals" width="800"/>
+    
+    - Day ahead outperformed the SARIMA model due to strong daily periodicity in energy price.
+
+### XGBoost Model
+
+The aim of the XGBoost model is to leverage advanced machine learning techniques to accurately predict energy price, capturing complex nonlinear relationships and temporal patterns that traditional time series models may miss.
+
+The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_price.ipynb)
+
+#### Summary
+
+- XGBoost was selected for energy price forecasting due to its ability to handle non-linearity, capture feature interactions, and manage missing or noisy data while avoiding overfitting through regularisation, making it more suitable than other non-neural-network-based machine learning methods.
+- `Multi-Output XGBoost`, `Data Exploration & Preprocessing`, `Lagged Features`, `Cyclical Feature Encoding`, `Categorical Features`, `Voronoi Diagram`, `Pearson Correlation Matrix`, `Shap`, `Successive Feature Removal`, `Cross-Validation`, `Hyperparameter Tuning`
+- **Model Evaluation**
+    - RMSE = 21.57 EUR/MWh, MAE = 16.57 EUR/MWh
+    <img src="./images/xgboost_performance_price.png" alt="XGBoost Performance" width="800"/>
+    <img src="./images/xgboost_residuals_price.png" alt="XGBoost Residuals" width="500"/>
+    
+    - This represents a substantial 22-29% improvement in error compared to the day ahead benchmark, demonstrating the model's ability to capture complex patterns in the data.
+    - The model is saved under `./models/price_xgboost_model.pkl`
+
+
+### TFT Model
+
+The aim of the TFT model is to ...
+
+The complete work can be found in : [TFT Jupyter Notebook](tft_price.ipynb)
+
+#### Summary
+
+
+### Energy Price Conclusion
+
+
 ## Data Collection
 
 - Hourly Weather Data for Madrid, Barcelona, Seville, Bilboa, Valencia 2019-2024 - [link](https://www.visualcrossing.com/weather/weather-data-services)
@@ -146,4 +178,4 @@ In conclusion, the XGBoost model greatly outperformed both the SARIMA model and 
 - Daily Spanish Gas Prices (GDAES_D+1) 2019-2024 - [link](https://www.mibgas.es/en/file-access)
 - Spanish population density data - [link](https://data.humdata.org/dataset/worldpop-population-density-for-spain)
 
-- Map of power plants around the world (used to get location of wind and solar plants in spain) - [link](https://datasets.wri.org/datasets/global-power-plant-database)
+- Map of power plants around the world (used to get location of wind, solar and hydro plants in spain) - [link](https://datasets.wri.org/datasets/global-power-plant-database)
