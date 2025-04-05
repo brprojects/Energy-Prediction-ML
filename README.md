@@ -100,7 +100,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
 #### Summary
 
 - The Transformer was selected for energy demand forecasting because its self-attention mechanism efficiently captures both short- and long-term dependencies, handles multiple input features simultaneously, and scales well for multi-output tasks, making it more suitable than other neural network-based methods.
-- `Encoder-only Transformer`, `Data Restructuring`, `Model Architecture`, `Learnable Positional Encoding`, `Hyperparameter Tuning`
+- `Encoder-only Transformer`, `Seq2Seq`, `Data Restructuring`, `Model Architecture`, `Learnable Positional Encoding`, `Hyperparameter Tuning`
 - **Model Evaluation**
     - RMSE = 899.11 MW, MAE = 681.94 MW and MAPE = 2.57%.
     <img src="./images/transformer_performance.png" alt="Transformer Performance" width="800"/>
