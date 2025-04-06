@@ -186,4 +186,4 @@ In conclusion, both the XGBoost and TFT models significantly outperformed the SA
 - Daily Spanish Gas Prices (GDAES_D+1) 2019-2024 - [link](https://www.mibgas.es/en/file-access)
 - Spanish population density data - [link](https://data.humdata.org/dataset/worldpop-population-density-for-spain)
 
-- Map of power plants around the world (used to get location of wind, solar and hydro plants in spain) - [link](https://datasets.wri.org/datasets/global-power-plant-database)
+- Map of power plants around the world (used to get location of wind, solar and hydro plants in Spain) - [link](https://datasets.wri.org/datasets/global-power-plant-database)
