@@ -34,7 +34,6 @@ An example of a bid stack is shown in the figure above. Historical bid stacks fo
 Price transparency is ensured, and the final Day-Ahead Price is published on OMIE’s website. The market also includes an Intraday Market, where participants can adjust their positions after the Day-Ahead results. If consumers fail to secure sufficient energy in the DAM or if their energy needs change, they can use the intraday market to purchase additional electricity. Similarly, producers can sell any surplus they may have or adjust their commitments to match their real-time production capabilities. Prices are influenced by supply, demand, and the availability of generation sources, ensuring efficient electricity trading.
 
 
-
 ### Motivation For Accurately Predicting Energy Demand & Price
 
 - **Improved Grid Stability & Reliability**  - Accurate demand forecasts help grid operators balance supply and demand, reducing blackouts and inefficiencies.
@@ -90,7 +89,6 @@ The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_demand.ip
     - This represents a substantial 47 - 53% improvement in both absolute and relative error compared to week ahead benchmark, demonstrating the model's ability to capture complex patterns in the data.
     - The model is saved under `./models/demand_xgboost_model.pkl`
 
-
 ### Transformer Model
 
 The aim of the Transformer model is to leverage self-attention mechanisms to capture both short- and long-range dependencies in energy demand data, allowing for more flexible feature interactions compared to traditional time series models.
@@ -100,7 +98,7 @@ The complete work can be found in : [Transformer Jupyter Notebook](transformer_d
 #### Summary
 
 - The Transformer was selected for energy demand forecasting because its self-attention mechanism efficiently captures both short- and long-term dependencies, handles multiple input features simultaneously, and scales well for multi-output tasks, making it more suitable than other neural network-based methods.
-- `Encoder-only Transformer`, `Seq2Seq`, `Data Restructuring`, `Model Architecture`, `Learnable Positional Encoding`, `Hyperparameter Tuning`
+- `Encoder-only Transformer`, `Seq2Seq`, `Deep Learning`, `Data Restructuring`, `Model Architecture`, `Learnable Positional Encoding`, `Hyperparameter Tuning`
 - **Model Evaluation**
     - RMSE = 899.11 MW, MAE = 681.94 MW and MAPE = 2.57%.
     <img src="./images/transformer_performance.png" alt="Transformer Performance" width="800"/>
@@ -158,17 +156,27 @@ The complete work can be found in : [XGBoost Jupyter Notebook](xgboost_price.ipy
     - This represents a substantial 22-29% improvement in error compared to the day ahead benchmark, demonstrating the model's ability to capture complex patterns in the data.
     - The model is saved under `./models/price_xgboost_model.pkl`
 
+### TFT (Temporal Fusion Transformer) Model
 
-### TFT Model
-
-The aim of the TFT model is to ...
+The aim of the TFT model is to leverage deep learning techniques tailored for time-series forecasting, enabling accurate energy price predictions by capturing both short- and long-term dependencies, while effectively incorporating known future inputs and exogenous variables.
 
 The complete work can be found in : [TFT Jupyter Notebook](tft_price.ipynb)
 
 #### Summary
 
+- TFT was selected for energy price forecasting due to its architecture specifically designed for time-series data, combining LSTMs, attention mechanisms, and variable selection networks. Its ability to handle mixed inputs, such as historical observations, exogenous variables, and known future inputs, makes it well-suited to capturing the complex dynamics involved in energy markets.
+- `TimeSeriesDataset`, `Deep Learning`, `Model Comparison`, `CUDA`
+- **Model Evaluation**
+    - RMSE = 22.23 EUR/MWh, MAE = 16.52 EUR/MWh
+    <img src="./images/tft_performance.png" alt="TFT Performance" width="800"/>
+    <img src="./images/tft_residuals.png" alt="TFT Residuals" width="500"/>
+    
+    - This represents a substantial improvement in error compared to the day ahead benchmark, and similar performance to the XGBoost model.
+    - The model is saved under `./models/price_tft_model.ckpt`
 
 ### Energy Price Conclusion
+
+In conclusion, both the XGBoost and TFT models significantly outperformed the SARIMA model and the day-ahead benchmark, reducing forecasting error by ~25%. While XGBoost slightly outperformed TFT in terms of RMSE, the difference in performance was minimal. Notably, the TFT model was able to achieve comparable accuracy despite the limited dataset size, thanks to its architecture specifically designed for time-series forecasting. Given its strong performance and interpretability, the TFT model represents a powerful deep learning alternative to XGBoost for energy price forecasting.
 
 
 ## Data Collection
